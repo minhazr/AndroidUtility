@@ -26,5 +26,4 @@ public enum LogModule {
     CRASH,
     ANALYTICS,
     PAYMENTS
-
 }
