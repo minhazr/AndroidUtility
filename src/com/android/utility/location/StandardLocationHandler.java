@@ -14,6 +14,7 @@
  * limitations under the License.
  *
  */
+
 package com.android.utility.location;
 
 import android.location.Location;
@@ -21,12 +22,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.android.utility.log.LogModule;
 import com.android.utility.log.Logger;
 
 /**
  * This is Standard location service.
- *
- *
  */
 class StandardLocationHandler implements LocationListener {
     private static final String TAG = StandardLocationHandler.class.getSimpleName();
@@ -43,7 +43,7 @@ class StandardLocationHandler implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-    	Logger.d(TAG, "Receive location update: " + this.toString());
+        Logger.d(LogModule.LOCATION, TAG, "Receive location update: ");
         this.locationNotifier.notify(location);
     }
 
@@ -64,33 +64,40 @@ class StandardLocationHandler implements LocationListener {
     }
 
     public void register(LocationManager locationManager) {
-    	Logger.d(TAG, "Registering this location listener: " + this.toString());
+        Logger.d(LogModule.LOCATION, TAG, "Registering this location listener: ");
 
         requestInProgress = true;
         Location gpsLocation = null, networkLocation = null;
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                                                   LOCATION_UPDATE_MIN_TIME,
-                                                   LOCATION_UPDATE_MIN_DISTANCE,
-                                                   this);
+                    LOCATION_UPDATE_MIN_TIME,
+                    LOCATION_UPDATE_MIN_DISTANCE,
+                    this);
             gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+        {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                                                   LOCATION_UPDATE_MIN_TIME,
-                                                   LOCATION_UPDATE_MIN_DISTANCE,
-                                                   this);
-            networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    LOCATION_UPDATE_MIN_TIME,
+                    LOCATION_UPDATE_MIN_DISTANCE,
+                    this);
+            networkLocation = locationManager
+                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
-        Logger.d(TAG,"locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) = " + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
-        Logger.d(TAG,"locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) = " + locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER));            
-        Logger.d(TAG,"gpsLocation = " + gpsLocation);
-        Logger.d(TAG,"networkLocation = " + networkLocation);
+        Logger.d(LogModule.LOCATION, TAG,
+                "locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) = "
+                        + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
+        Logger.d(LogModule.LOCATION, TAG,
+                "locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) = "
+                        + locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
+        Logger.d(LogModule.LOCATION, TAG, "gpsLocation = " + gpsLocation);
+        Logger.d(LogModule.LOCATION, TAG, "networkLocation = " + networkLocation);
         this.locationNotifier.notify(gpsLocation, networkLocation);
     }
 
     public void unregister(LocationManager locationManager) {
-    	Logger.d(TAG, "Unregistering this location listener: ");
+        Logger.d(LogModule.LOCATION, TAG, "Unregistering this location listener: ");
 
         requestInProgress = false;
         locationManager.removeUpdates(this);

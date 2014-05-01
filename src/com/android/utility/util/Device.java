@@ -176,4 +176,12 @@ public class Device {
         return null;
     }
 
+    public int getApiLevel() {
+        return android.os.Build.VERSION.SDK_INT;
+    }
+
+    public String getOsVersion() {
+        return android.os.Build.VERSION.RELEASE;
+    }
+
 }

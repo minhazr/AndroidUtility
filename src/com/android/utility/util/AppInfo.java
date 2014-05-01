@@ -11,6 +11,7 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.android.utility.log.LogModule;
 import com.android.utility.log.Logger;
 
 public class AppInfo {
@@ -117,11 +118,13 @@ public class AppInfo {
         }
         catch (NameNotFoundException e)
         {
-            Logger.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+            Logger.e(LogModule.UTILITY, TAG,
+                    "Failed to load meta-data, NameNotFound: " + e.getMessage());
         }
         catch (NullPointerException e)
         {
-            Logger.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
+            Logger.e(LogModule.UTILITY, TAG,
+                    "Failed to load meta-data, NullPointer: " + e.getMessage());
         }
         return false;
     }

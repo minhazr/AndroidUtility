@@ -38,6 +38,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 
+import com.android.utility.log.LogModule;
 import com.android.utility.log.Logger;
 
 /**
@@ -138,13 +139,13 @@ public class Network {
         catch (ClientProtocolException e)
         {
             // TODO Auto-generated catch block
-            Logger.e(TAG, e.getMessage());
+            Logger.e(LogModule.NETWORK, TAG, e.getMessage());
             result = false;
         }
         catch (IOException e)
         {
             // TODO Auto-generated catch block
-            Logger.e(TAG, e.toString());
+            Logger.e(LogModule.NETWORK, TAG, e.toString());
             result = false;
         }
         return result;

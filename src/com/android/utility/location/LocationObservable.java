@@ -26,8 +26,8 @@ import java.util.concurrent.TimeUnit;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
 
+import com.android.utility.log.LogModule;
 import com.android.utility.log.Logger;
 import com.android.utility.util.AppInfo;
 import com.android.utility.util.Device;
@@ -73,17 +73,18 @@ public class LocationObservable extends Observable implements LocationNotifier {
         if (AppInfo.isGMSServiceInManifest(context) && Device.isPlayServicesAvailable(context))
         {
             gmsLocationHandler = new GMSLocationHandler(context, this);
-            Log.d(TAG, "Yes play service is available");
+            Logger.d(LogModule.LOCATION, TAG, "Yes play service is available");
         }
         else
         {
             manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             standardLocationHandler = new StandardLocationHandler(this);
-            Log.d(TAG, "Oopps no play service");
+            Logger.d(LogModule.LOCATION, TAG, "Oopps no play service");
         }
     }
 
     private void updateLocation(Location current_location) {
+        Logger.d(LogModule.LOCATION, TAG, "Location update receievd and Last Locaiton is empty");
         updateLocation(mLastLocation, current_location);
     }
 
@@ -96,9 +97,10 @@ public class LocationObservable extends Observable implements LocationNotifier {
     private void updateLocation(Location last_location, Location current_location) {
         if ((current_location == null) && (last_location == null))
         {
-            Logger.d(TAG, "current_location = " + current_location);
-            Logger.d(TAG, "last_location = " + last_location);
+            Logger.d(LogModule.LOCATION, TAG, "current_location = " + current_location);
+            Logger.d(LogModule.LOCATION, TAG, "last_location = " + last_location);
             Logger.d(
+                    LogModule.LOCATION,
                     TAG,
                     "Both current_location and last_location are null, so we do not send location update to application");
             return;
@@ -148,7 +150,8 @@ public class LocationObservable extends Observable implements LocationNotifier {
     }
 
     synchronized public void onDesiredLocationChanged(Location location) {
-        Logger.d(TAG, "found my desired location: " + location);
+        Logger.d(LogModule.LOCATION, TAG, "found my desired location: notifying observer now"
+                + location);
         mLastLocation = location;
         setChanged();
         notifyObservers(location);
@@ -160,6 +163,7 @@ public class LocationObservable extends Observable implements LocationNotifier {
         scheduler.schedule(new Runnable() {
             @Override
             public void run() {
+                Logger.d(LogModule.LOCATION, TAG, "Executing location time out");
                 unregister();
                 onDesiredLocationChanged(null);
             }
@@ -180,11 +184,11 @@ public class LocationObservable extends Observable implements LocationNotifier {
             long locationUpdateDelta = new Date().getTime() - location.getTime();
             if (locationUpdateDelta < LOCATION_UPDATE_MAX_DELTA_THRESHOLD)
             {
-                Logger.d(TAG, "Location is accurate: " + location.toString());
+                Logger.d(LogModule.LOCATION, TAG, "Location is accurate: " + location.toString());
                 return true;
             }
         }
-        Logger.d(TAG, "Location is not accurate: " + String.valueOf(location));
+        Logger.d(LogModule.LOCATION, TAG, "Location is not accurate: " + String.valueOf(location));
         return false;
     }
 
@@ -205,7 +209,7 @@ public class LocationObservable extends Observable implements LocationNotifier {
     }
 
     public void register() {
-        Logger.d(TAG, "Registering this location listener: " + this.toString());
+        Logger.d(LogModule.LOCATION, TAG, "Registering this location listener: " + this.toString());
         if (manager == null)
         {
             gmsLocationHandler.start();
@@ -218,13 +222,15 @@ public class LocationObservable extends Observable implements LocationNotifier {
     }
 
     public void unregister() {
-        Logger.d(TAG, "Unregistering this location listener: ");
+
         if ((manager == null) && (gmsLocationHandler != null))
         {
+            Logger.d(LogModule.LOCATION, TAG, "Unregistering GMS location: ");
             gmsLocationHandler.stop();
         }
         else
         {
+            Logger.d(LogModule.LOCATION, TAG, "Unregistering this Standard listener: ");
             standardLocationHandler.unregister(manager);
         }
     }

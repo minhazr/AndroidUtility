@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
+import com.android.utility.log.LogModule;
 import com.android.utility.log.Logger;
 
 public class Ftp {
@@ -66,15 +67,15 @@ public class Ftp {
         }
         catch (SocketException e)
         {
-            Logger.e(TAG, e.getStackTrace().toString());
+            Logger.e(LogModule.NETWORK, TAG, e.getStackTrace().toString());
         }
         catch (UnknownHostException e)
         {
-            Logger.e(TAG, e.getStackTrace().toString());
+            Logger.e(LogModule.NETWORK, TAG, e.getStackTrace().toString());
         }
         catch (IOException e)
         {
-            Logger.e(TAG, e.getStackTrace().toString());
+            Logger.e(LogModule.NETWORK, TAG, e.getStackTrace().toString());
         }
 
     }

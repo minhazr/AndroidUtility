@@ -14,12 +14,14 @@
  * limitations under the License.
  *
  */
+
 package com.android.utility.location;
 
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 
+import com.android.utility.log.LogModule;
 import com.android.utility.log.Logger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -29,9 +31,8 @@ import com.google.android.gms.location.LocationRequest;
 
 /**
  * This is GMS location service.
- *
+ * 
  * @author Minhaz Rafi Chowdhury
- *
  */
 class GMSLocationHandler implements GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
@@ -44,7 +45,8 @@ class GMSLocationHandler implements GooglePlayServicesClient.ConnectionCallbacks
     private LocationNotifier locationNotifier;
 
     GMSLocationHandler(Context context, LocationNotifier locationNotifier) {
-        if ((context == null) || (locationNotifier == null)) {
+        if ((context == null) || (locationNotifier == null))
+        {
             throw new NullPointerException();
         }
         locationClient = new LocationClient(context, this, this);
@@ -60,7 +62,7 @@ class GMSLocationHandler implements GooglePlayServicesClient.ConnectionCallbacks
 
     @Override
     public void onLocationChanged(Location arg0) {
-    	Logger.d(TAG, "Receive location update: " + this.toString());
+        Logger.d(LogModule.LOCATION, TAG, "Receive location update: " + this.toString());
         this.locationNotifier.notify(arg0);
     }
 
@@ -70,7 +72,7 @@ class GMSLocationHandler implements GooglePlayServicesClient.ConnectionCallbacks
 
     @Override
     public void onConnected(Bundle arg0) {
-    	Logger.d(TAG, "GMS service connected: " + this.toString());
+        Logger.d(LogModule.LOCATION, TAG, "GMS service connected: " + this.toString());
         requestInProgress = true;
         locationClient.requestLocationUpdates(locationRequest, this);
 
@@ -81,23 +83,24 @@ class GMSLocationHandler implements GooglePlayServicesClient.ConnectionCallbacks
     }
 
     void stop() {
-    	Logger.d(TAG, "Service Stop: ");
+        Logger.d(LogModule.LOCATION, TAG, "Service Stop: ");
         requestInProgress = false;
-        if (locationClient.isConnected()) {
+        if (locationClient.isConnected())
+        {
             locationClient.removeLocationUpdates(this);
         }
         locationClient.disconnect();
     }
 
     void start() {
-    	Logger.d(TAG, "Service started: " + this.toString());
+        Logger.d(LogModule.LOCATION, TAG, "Service started: " + this.toString());
         requestInProgress = true;
         locationClient.connect();
     }
 
     @Override
     public void onDisconnected() {
-    	Logger.d(TAG, "Service disconnected ");
+        Logger.d(LogModule.LOCATION, TAG, "Service disconnected ");
         requestInProgress = false;
     }
 }

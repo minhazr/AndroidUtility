@@ -180,6 +180,15 @@ public final class Logger {
         }
     }
 
+    public synchronized static void d(LogModule type, String tag, String message) {
+        String message_tag = (tag == null) ? new String("Subscription") : String.format(Locale.US,
+                tag);
+        if (isLoggingEnabled(type))
+        {
+            android.util.Log.d(message_tag, buildMessage(message));
+        }
+    }
+
     public synchronized static void d(String tag, String message) {
         String message_tag = (tag == null) ? new String("Subscription") : String.format(Locale.US,
                 tag);
@@ -193,29 +202,21 @@ public final class Logger {
         }
     }
 
-    public static void e(String tag, String message) {
+    public static void e(LogModule type, String tag, String message) {
         String message_tag = (tag == null) ? new String("Subscription") : String.format(Locale.US,
                 tag);
-        Set<LogModule> types = getLoggingTypes();
-        for (LogModule type : types)
+        if (isLoggingEnabled(type))
         {
-            if (isLoggingEnabled(type))
-            {
-                android.util.Log.e(message_tag, buildMessage(message));
-            }
+            android.util.Log.e(message_tag, buildMessage(message));
         }
     }
 
-    public static void i(String tag, String message) {
+    public static void i(LogModule type, String tag, String message) {
         String message_tag = (tag == null) ? new String("Subscription") : String.format(Locale.US,
                 tag);
-        Set<LogModule> types = getLoggingTypes();
-        for (LogModule type : types)
+        if (isLoggingEnabled(type))
         {
-            if (isLoggingEnabled(type))
-            {
-                android.util.Log.i(message_tag, buildMessage(message));
-            }
+            android.util.Log.i(message_tag, buildMessage(message));
         }
     }
 
