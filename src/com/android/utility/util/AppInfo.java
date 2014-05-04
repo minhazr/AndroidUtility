@@ -64,7 +64,7 @@ public class AppInfo {
         }
         boolean permission_granted = (PackageManager.PERMISSION_GRANTED == context
                 .checkCallingOrSelfPermission(permission));
-        Logger.d(TAG, permission + " Available: " + permission);
+        Logger.d(LogModule.UTILITY, TAG, permission + " Available: " + permission_granted);
         return permission_granted;
     }
 
@@ -129,4 +129,35 @@ public class AppInfo {
         return false;
     }
 
+    /**
+     * Read manifest file and return meta data value
+     * <meta-data android:name="key" android:value="value" />
+     * 
+     * @param context Application Context
+     * @param key android:name part of the meta data
+     * @return null or the android:value part of the meta data
+     */
+    public static String getMetaData(final Context context, final String key) {
+        if ((context == null) || TextUtils.isEmpty(key))
+        {
+            throw new IllegalArgumentException();
+        }
+        String result = null;
+        try
+        {
+            final ApplicationInfo ai = context.getPackageManager().getApplicationInfo(
+                    context.getPackageName(), PackageManager.GET_META_DATA);
+            final Bundle bundle = ai.metaData;
+            result = bundle.getString(key);
+        }
+        catch (final NameNotFoundException e)
+        {
+            Logger.d(LogModule.UTILITY, TAG, e.getMessage());
+        }
+        catch (final NullPointerException e)
+        {
+            Logger.d(LogModule.UTILITY, TAG, e.getMessage());
+        }
+        return result;
+    }
 }
