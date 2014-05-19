@@ -160,4 +160,13 @@ public class AppInfo {
         }
         return result;
     }
+
+    public static Locale getCurrentLocal(Context context) {
+        if (context == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        return context.getResources().getConfiguration().locale;
+
+    }
 }
