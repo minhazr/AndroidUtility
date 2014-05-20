@@ -27,11 +27,11 @@ public class AppInfo {
         mContext = applicationContext;
     }
 
-    public int getVersionCode() {
+    public static int getVersionCode(Context context) {
 
         try
         {
-            return mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
         }
         catch (NameNotFoundException e)
         {
@@ -161,12 +161,4 @@ public class AppInfo {
         return result;
     }
 
-    public static Locale getCurrentLocal(Context context) {
-        if (context == null)
-        {
-            throw new IllegalArgumentException();
-        }
-        return context.getResources().getConfiguration().locale;
-
-    }
 }

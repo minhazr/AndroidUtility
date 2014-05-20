@@ -25,6 +25,7 @@ import com.android.utility.log.Logger;
 
 public class Security {
     public static final String HASH_CIPHER = "SHA-512";
+    public static final String HMAC_CIPHER = "HmacSHA1";
     private static final String TAG = Security.class.getSimpleName();
 
     public static byte[] toHash(String text) throws CipherException {
