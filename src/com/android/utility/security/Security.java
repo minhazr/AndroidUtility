@@ -11,7 +11,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.Mac;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -26,9 +30,11 @@ import com.android.utility.log.Logger;
 public class Security {
     public static final String HASH_CIPHER = "SHA-512";
     public static final String HMAC_CIPHER = "HmacSHA1";
+    private static final byte[] salt = { (byte) 0xA4, (byte) 0x0B, (byte) 0xC8,
+        (byte) 0x34, (byte) 0xD6, (byte) 0x95, (byte) 0xF3, (byte) 0x13 };
     private static final String TAG = Security.class.getSimpleName();
 
-    public static byte[] toHash(String text) throws CipherException {
+    public static byte[] toHash(String text) {
         String hashAlgoName = HASH_CIPHER;
         MessageDigest hash = null;
         try
@@ -37,8 +43,7 @@ public class Security {
         }
         catch (NoSuchAlgorithmException e)
         {
-            // TODO Auto-generated catch block
-            throw new CipherException(e.getMessage());
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
         }
 
         try
@@ -47,14 +52,14 @@ public class Security {
         }
         catch (UnsupportedEncodingException e)
         {
-            throw new CipherException(e.getMessage());
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
         }
         byte[] digest = hash.digest();
         return digest;
 
     }
 
-    public static byte[] toHash(BufferedInputStream in, int bufferSize) throws CipherException {
+    public static byte[] toHash(BufferedInputStream in, int bufferSize) {
         MessageDigest digest = null;
         try
         {
@@ -62,8 +67,7 @@ public class Security {
         }
         catch (NoSuchAlgorithmException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
         }
         byte[] buffer = new byte[bufferSize];
         int sizeRead = -1;
@@ -76,8 +80,7 @@ public class Security {
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
-            throw new CipherException(e.getMessage());
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
         }
         finally
         {
@@ -125,19 +128,103 @@ public class Security {
         return Base64.encodeToString(digest, Base64.DEFAULT);
     }
 
-    public static SecretKey generateKey(char[] passphraseOrPin, byte[] salt)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static SecretKey generateKey(char[] passphraseOrPin){
         // Number of PBKDF2 hardening rounds to use. Larger values increase
         // computation time. You should select a value that causes computation
         // to take >100ms.
         final int iterations = 1000;
 
         // Generate a 256-bit key
-        final int outputKeyLength = 256;
+        final int outputKeyLength = 128;
 
-        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        KeySpec keySpec = new PBEKeySpec(passphraseOrPin, salt, iterations, outputKeyLength);
-        SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
+        SecretKeyFactory secretKeyFactory = null;
+        SecretKey secretKey = null;
+        try
+        {
+            secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            KeySpec keySpec = new PBEKeySpec(passphraseOrPin, salt, iterations, outputKeyLength);
+            secretKey = secretKeyFactory.generateSecret(keySpec);
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (InvalidKeySpecException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+       
+        
+
         return secretKey;
+    }
+
+
+    public static byte[] encrypt(byte[] key, byte[] clear) {
+        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+        Cipher cipher = null;
+        byte[] encrypted = null;
+        try
+        {
+            cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+            encrypted = cipher.doFinal(clear);
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (NoSuchPaddingException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (InvalidKeyException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (IllegalBlockSizeException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (BadPaddingException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        return encrypted;
+    }
+
+    public static byte[] decrypt(byte[] key, byte[] encrypted) {
+        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+        Cipher cipher;
+        byte[] decrypted = null;
+        try
+        {
+            cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+            decrypted = cipher.doFinal(encrypted);
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (NoSuchPaddingException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (InvalidKeyException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (IllegalBlockSizeException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+        catch (BadPaddingException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+        }
+       
+
+        return decrypted;
     }
 }

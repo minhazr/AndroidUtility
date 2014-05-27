@@ -223,7 +223,7 @@ public class LocationObservable extends Observable implements LocationNotifier {
 
     public void unregister() {
 
-        if ((manager == null) && (gmsLocationHandler != null))
+        if ((manager == null) && (gmsLocationHandler != null) && isListenerRunning())
         {
             Logger.d(LogModule.LOCATION, TAG, "Unregistering GMS location: ");
             gmsLocationHandler.stop();

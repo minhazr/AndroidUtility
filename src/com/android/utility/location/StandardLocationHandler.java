@@ -64,7 +64,7 @@ class StandardLocationHandler implements LocationListener {
     }
 
     public void register(LocationManager locationManager) {
-        Logger.d(LogModule.LOCATION, TAG, "Registering this location listener: ");
+        Logger.d(LogModule.LOCATION, TAG, "Registering Standard location listener: ");
 
         requestInProgress = true;
         Location gpsLocation = null, networkLocation = null;
