@@ -23,9 +23,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 import android.content.Context;
 import android.util.Base64;
+import android.util.Log;
 
 import com.android.utility.log.LogModule;
 import com.android.utility.log.Logger;
+import com.android.utility.util.AppInfo;
 
 public class Security {
     public static final String HASH_CIPHER = "SHA-512";
@@ -135,7 +137,19 @@ public class Security {
         final int iterations = 1000;
 
         // Generate a 256-bit key
-        final int outputKeyLength = 128;
+        int outputKeyLength;
+        try
+        {
+            outputKeyLength = Cipher.getMaxAllowedKeyLength("AES");
+            Log.d("minhaz", "key length available "+outputKeyLength);
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            Logger.d(LogModule.SECURITY, TAG, e.getMessage());
+            outputKeyLength=128;
+        }
+        if (outputKeyLength>256)
+            outputKeyLength=256;
 
         SecretKeyFactory secretKeyFactory = null;
         SecretKey secretKey = null;
@@ -158,6 +172,7 @@ public class Security {
 
         return secretKey;
     }
+  
 
 
     public static byte[] encrypt(byte[] key, byte[] clear) {
