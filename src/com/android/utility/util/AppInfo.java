@@ -1,12 +1,15 @@
 
 package com.android.utility.util;
 
+import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -159,6 +162,18 @@ public class AppInfo {
             Logger.d(LogModule.UTILITY, TAG, e.getMessage());
         }
         return result;
+    }
+    /**
+     * Return true if any activity can resolve that intent
+     * @param context
+     * @param intent
+     * @return
+     */
+    
+    public static  boolean isCallable(Context context , Intent intent) {
+        List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent, 
+            PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 
 }
