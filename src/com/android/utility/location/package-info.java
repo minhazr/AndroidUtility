@@ -16,3 +16,13 @@
  */
 
 package com.android.utility.location;
+
+/*
+ * This location API uses Google GMS or device chips set which ever available. 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+

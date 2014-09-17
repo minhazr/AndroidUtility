@@ -15,3 +15,13 @@
  *
  */
 package com.android.utility.log;
+
+/*This Logging package will help you to log by module.For example when you work
+ *  on a large project you do no wish to see every log in your log cat. With 
+ *  the help of this package you will be able to 
+ *  1. display log from an specific part of your application. 
+ *  2. activate deactivate module . 
+ *  3. Log total time execution time 
+ *
+ *
+ */

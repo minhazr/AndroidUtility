@@ -29,11 +29,6 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
-/**
- * This is GMS location service.
- * 
- * @author Minhaz Rafi Chowdhury
- */
 class GMSLocationHandler implements GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
     private static final String TAG = GMSLocationHandler.class.getSimpleName();
