@@ -1,5 +1,4 @@
 AndroidUtility
 ==============
 
-Everytime i start working on an Android application i have to write some boilerplate code over and over. 
-Now, i am uploading those code here and hope others will find that usefull.
+Utility project for Android. It contains various of helper methods to get system infromation or other task related to Android app development. 
