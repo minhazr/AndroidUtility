@@ -3,7 +3,9 @@ AndroidUtility
 
 Every time I start working on an Android project I find out I need some utility code regardless what that project is about.  Things like checking network connectivity or locations. So I created this project, to save some time. 
 This is complete list
+
 Security Package
+
 App Signature
 App fingerprint
 App certificate
