@@ -6,17 +6,11 @@ This is complete list
 
 Security Package
 
-App Signature
-App fingerprint
-App certificate
+App Signature/fingerprint/certificate
 
 Utility Package
 
-Application Version info
-Application Package Name
-Application Signature
-Application Local
-Meta Data
+Application Version info/Package Name/Signature/Local/Meta Data
 Test if activity is available
 
 Bitmap to Base64
