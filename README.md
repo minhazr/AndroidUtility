@@ -13,10 +13,10 @@ Utility Package
 Application Version info/Package Name/Signature/Local/Meta Data
 Test if activity is available
 
-+Bitmap to Base64/Drawable
-+Drawable to Bitmap
-+Resource to Bitmap
-+Base64 to Bitmap
+Bitmap to Base64/Drawable
+Drawable to Bitmap
+Resource to Bitmap
+Base64 to Bitmap
 
 Number of Days between to date
 
