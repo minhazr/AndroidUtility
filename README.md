@@ -4,38 +4,46 @@ AndroidUtility
 Every time I start working on an Android project I find out I need some utility code regardless what that project is about.  Things like checking network connectivity or locations. So I created this project, to save some time. 
 This is complete list
 
-Security Package
+**Security Package**
 
 App Signature/fingerprint/certificate
 
-Utility Package
+**Utility Package**
 
-Application Version info/Package Name/Signature/Local/Meta Data
-Test if activity is available
+- Application Version info/Package Name/Signature/Local/Meta Data
+- Test if activity is available
+- Bitmap to Base64/Drawable
+- Drawable to Bitmap
+- Resource to Bitmap
+- Base64 to Bitmap
+- Number of Days between to date
 
-Bitmap to Base64/Drawable
-Drawable to Bitmap
-Resource to Bitmap
-Base64 to Bitmap
+- Device IMEI/ MAC/ Mobile Operator/ Sim No/ Phone No/ Bluetooth Mac/ API level/ OS Version
+- Test if device is an Amazon Device
+- Test if Google Play service available on Device
+- Directory size
 
-Number of Days between to date
+- Available Heap/total Memory
+- Device RAM
 
-Device IMEI/ MAC/ Mobile Operator/ Sim No/ Phone No/ Bluetooth Mac/ API level/ OS Version
-Test if device is an Amazon Device
-Test if Google Play service available on Device
-Directory size
+- if device is in Aeroplane Mode
+- Test Wi-Fi Enable /Disable
+- Test if Data connection is Available
+- Test URL reachability
+- Test Wi-Fi connectivity
+- Store key value in preference
+- Retrieve key value from preference
 
-Available Heap/total Memory
-Device RAM
+- Get Available SD card Space/Size
+- Check if SD card is writable/Readable
 
-Test if device is in Aeroplane Mode
-Test Wi-Fi Enable /Disable
-Test if Data connection is Available
-Test URL reachability
-Test Wi-Fi connectivity
-Store key value in preference
-Retrieve key value from preference
+**Logging Package**
 
-Get Available SD card Space/Size
-Check if SD card is writable/Readable
+-Log by Module: if you apps consiste of module like location, network and cache you can activitate and deactivate logging for each module. 
+
+-Log Exeution time: use this for benchmark between executions
+
+**Location Package**
+
+Uses multple location provider including Google play service to get location info. 
 
